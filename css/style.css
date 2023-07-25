@@ -1,0 +1,13 @@
+
+.table_row {
+  background-color: lightgray;
+}
+.table_header {
+  padding: 3px 40px;
+}
+.table_header:nth-child(4){
+  padding: 3px 55px;
+}
+.table_header:nth-child(5){
+  padding: 3px 65px;
+}

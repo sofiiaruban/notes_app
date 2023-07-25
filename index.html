@@ -4,20 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notes App</title>
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
   <main>
     <table class="notes_table">
-      <th>Name</th>
-      <th>Created</th>
-      <th>Category</th>
-      <th>Content</th>
-      <th>Dates</th>
+      <tr class="table_row">
+        <th class="table_header">Name</th>
+        <th class="table_header">Created</th>
+        <th class="table_header">Category</th>
+        <th class="table_header">Content</th>
+        <th class="table_header">Dates</th>
+        <th><img src="./assets/archive_icon.png" alt="archive" ></th>
+        <th><img src="./assets/trash-icon.png" alt="trash can" ></th>
+      </tr>
     </table>
     <table class="summary_table">
-      <th>Note Category</th>
-      <th>Active</th>
-      <th>Archived</th>
+      <th class="table_header">Note Category</th>
+      <th class="table_header">Active</th>
+      <th class="table_header">Archived</th>
   </table>
   </main>
 </body>
