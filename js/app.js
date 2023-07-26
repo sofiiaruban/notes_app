@@ -52,3 +52,5 @@ let notes = [
 const createNoteButton = document.getElementById('create_note_btn')
 createNoteButton.addEventListener('click', openModal)
 
+const addNoteButton = document.querySelector('.table_input_btn')
+addNoteButton.addEventListener('click', handleFormSubmit)
