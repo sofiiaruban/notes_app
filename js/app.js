@@ -54,3 +54,6 @@ createNoteButton.addEventListener('click', openModal)
 
 const addNoteButton = document.querySelector('.table_input_btn')
 addNoteButton.addEventListener('click', handleFormSubmit)
+
+const closeModalButton = document.querySelector('.table_input_close')
+closeModalButton.addEventListener('click', closeModal)
