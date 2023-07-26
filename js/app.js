@@ -49,5 +49,6 @@ let notes = [
     dates: ['7/26/2023']
   }
 ]
-const createNoteButton = document.getElementById('createNoteButton')
+const createNoteButton = document.getElementById('create_note_btn')
 createNoteButton.addEventListener('click', openModal)
+
