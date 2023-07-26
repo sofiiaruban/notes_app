@@ -19,11 +19,27 @@
         <th><img src="./assets/trash-icon.png" alt="trash can" ></th>
       </tr>
     </table>
+    <button id="createNoteButton">Create Note</button>
     <table class="summary_table">
       <th class="table_header">Note Category</th>
       <th class="table_header">Active</th>
       <th class="table_header">Archived</th>
   </table>
   </main>
+   <form class="modal_box" id="noteModal">
+    <input type="text" name="name" placeholder="Enter name">
+    <input type="text" name="created" placeholder="Enter created date">
+     
+     <div class="table_input_radio">
+      <div class="table_input_radio_row"><input type="radio" name="category"><label>Task</label></div>
+      <div class="table_input_radio_row"><input type="radio" name="category"><label>Random Thought</label></div>
+      <div class="table_input_radio_row"> <input type="radio" name="category"><label>Idea</label></div>
+    </div>
+     <input type="text" name="content" placeholder="Enter content">
+     <input type="text" name="dates" placeholder="Enter dates">
+     <button type="submit">Add Note</button>
+   </form>
+   
+  <script type="module" src="./js/app.js"></script>
 </body>
 </html>

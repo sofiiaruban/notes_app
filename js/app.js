@@ -1,3 +1,5 @@
+import { renderTable } from './utils.js';
+
 let notes = [
   {
     name: 'Shopping List',
@@ -43,3 +45,4 @@ let notes = [
   }
 ]
 let archives = [];
+renderTable(notes);

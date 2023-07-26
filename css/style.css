@@ -11,3 +11,34 @@
 .table_header:nth-child(5){
   padding: 3px 130px 3px 60px;
 }
+.edit_table_data {
+  display: flex;
+  justify-content: space-between;
+}
+.table_data {
+  padding: 3px;
+}
+.modal_box {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.modal_box input {
+  margin-bottom: 10px;
+  padding: 5px;
+}
+.table_input_radio {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.table_input_radio_row {
+  display: flex;
+}
+.table_input_radio_row input {
+  flex-basis: 10%;
+}
