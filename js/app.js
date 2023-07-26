@@ -1,4 +1,4 @@
-import { renderTable } from './utils.js';
+import { renderTable, openModal, closeModal } from './utils.js'
 
 let notes = [
   {
