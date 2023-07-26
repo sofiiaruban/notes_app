@@ -1,4 +1,9 @@
-import { renderTable, openModal, closeModal } from './utils.js'
+import {
+  renderTable,
+  openModal,
+  closeModal,
+  handleFormSubmit
+} from './utils.js'
 
 let notes = [
   {
@@ -44,5 +49,5 @@ let notes = [
     dates: ['7/26/2023']
   }
 ]
-let archives = [];
-renderTable(notes);
+const createNoteButton = document.getElementById('createNoteButton')
+createNoteButton.addEventListener('click', openModal)
