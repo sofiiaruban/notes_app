@@ -20,3 +20,7 @@ export function openModal() {
   const modal = document.getElementById('noteModal')
   modal.style.display = 'block'
 }
+export function closeModal() {
+  const modal = document.getElementById('noteModal')
+  modal.style.display = 'none'
+}
