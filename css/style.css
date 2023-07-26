@@ -20,7 +20,7 @@
 }
 .modal_box {
   width: 40%;
-  display: flex;
+  display: none;
   justify-content: center;
   flex-direction: column;
   padding: 35px;

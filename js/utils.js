@@ -17,16 +17,17 @@ export function renderTable(data) {
 
 }
 export function openModal() {
-  const modal = document.getElementById('noteModal')
-  modal.style.display = 'block'
+  const modal = document.getElementById('note_modal')
+  modal.style.display = 'flex'
 }
 export function closeModal() {
-  const modal = document.getElementById('noteModal')
+  const modal = document.getElementById('note_modal')
   modal.style.display = 'none'
 }
-export function handleFormSubmit(event) {
+export function handleFormSubmit(event, notes) {
   event.preventDefault()
-  const form = document.getElementById('noteModal')
+
+  const form = document.getElementById('note_modal')
   const formData = new FormData(form)
   const name = formData.get('name')
   const created = formData.get('created')
@@ -36,10 +37,12 @@ export function handleFormSubmit(event) {
     .get('dates')
     .split(',')
     .map((date) => date.trim())
+
   if (!name || !created || !category || !content || !dates) {
     alert('Please fill in all fields.')
     return
   }
+
   const newNote = {
     name,
     created,
@@ -47,6 +50,7 @@ export function handleFormSubmit(event) {
     content,
     dates
   }
+
   notes.push(newNote)
   form.reset()
   closeModal()
