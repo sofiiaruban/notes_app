@@ -1,8 +1,8 @@
 import {
-  renderTable,
-  openModal,
-  closeModal,
-  handleFormSubmit
+  renderNotesOnLoad,
+  addCreateNoteListener,
+  addAddNoteListener,
+  addCloseModalListener
 } from './utils.js'
 
 let notes = [
@@ -49,13 +49,10 @@ let notes = [
     dates: ['7/26/2023']
   }
 ]
-const createNoteButton = document.getElementById('create_note_btn')
-createNoteButton.addEventListener('click', openModal)
 
-const addNoteButton = document.querySelector('.table_input_btn')
-addNoteButton.addEventListener('click', (event) =>
-  handleFormSubmit(event, notes)
-)
-
-const closeModalButton = document.querySelector('.table_input_close')
-closeModalButton.addEventListener('click', closeModal)
+window.addEventListener('load', () => {
+  renderNotesOnLoad(notes)
+})
+addCreateNoteListener();
+addAddNoteListener(notes);
+addCloseModalListener();

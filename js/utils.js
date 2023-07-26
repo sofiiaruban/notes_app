@@ -1,7 +1,7 @@
 export function renderTable(data) {
-  const notesTable = document.querySelector('.notes_table');
+  const notesTable = document.querySelector('.notes_table')
   data.forEach((note, index) => {
-    const newRow = notesTable.insertRow(index+1)
+    const newRow = notesTable.insertRow(index + 1)
     newRow.innerHTML = `
       <td class="table_data">${note.name}</td>
       <td class="table_data">${note.created}</td>
@@ -14,8 +14,16 @@ export function renderTable(data) {
       <td class="table_data"><img src="./assets/trash-icon.png" alt="trash can"></td>
     `
   })
-
 }
+export function renderNotesOnLoad(notes) {
+  renderTable(notes)
+  if (notes.length === 0) {
+    const notesTable = document.querySelector('.notes_table')
+    const messageRow = notesTable.insertRow(1)
+    messageRow.innerHTML = `<td colspan="7">You have no notes. Please create one.</td>`
+  }
+}
+
 export function openModal() {
   const modal = document.getElementById('note_modal')
   modal.style.display = 'flex'
@@ -55,4 +63,19 @@ export function handleFormSubmit(event, notes) {
   form.reset()
   closeModal()
   renderTable(notes)
+}
+export function addCreateNoteListener() {
+const createNoteButton = document.getElementById('create_note_btn')
+createNoteButton.addEventListener('click', openModal)
+}
+export function addAddNoteListener(notes) {
+const addNoteButton = document.querySelector('.table_input_btn')
+addNoteButton.addEventListener('click', (event) =>
+  handleFormSubmit(event, notes)
+)
+}
+
+export function addCloseModalListener() {
+const closeModalButton = document.querySelector('.table_input_close')
+closeModalButton.addEventListener('click', closeModal)
 }
