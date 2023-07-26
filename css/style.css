@@ -23,9 +23,10 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 10px;
+  padding: 35px;
   border: 1px solid black;
   border-radius: 5px;
+  position: relative;
 }
 .modal_box input {
   margin-bottom: 10px;
@@ -41,4 +42,14 @@
 }
 .table_input_radio_row input {
   flex-basis: 10%;
+}
+.table_input_btn {
+  padding: 5px;
+}
+.table_input_close {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 5px;
+  right: 8px;
 }

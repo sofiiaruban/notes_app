@@ -24,3 +24,31 @@ export function closeModal() {
   const modal = document.getElementById('noteModal')
   modal.style.display = 'none'
 }
+export function handleFormSubmit(event) {
+  event.preventDefault()
+  const form = document.getElementById('noteModal')
+  const formData = new FormData(form)
+  const name = formData.get('name')
+  const created = formData.get('created')
+  const category = formData.get('category')
+  const content = formData.get('content')
+  const dates = formData
+    .get('dates')
+    .split(',')
+    .map((date) => date.trim())
+  if (!name || !created || !category || !content || !dates) {
+    alert('Please fill in all fields.')
+    return
+  }
+  const newNote = {
+    name,
+    created,
+    category,
+    content,
+    dates
+  }
+  notes.push(newNote)
+  form.reset()
+  closeModal()
+  renderTable(notes)
+}
