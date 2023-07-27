@@ -56,3 +56,6 @@
 .hidden {
   display: none;
 }
+.active {
+  display: table-cell;
+}

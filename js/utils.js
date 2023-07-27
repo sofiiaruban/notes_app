@@ -18,6 +18,7 @@ export function renderTable(data) {
         ', '
       )} <img class="table_edit_img" src="./assets/edit_icon.png" alt="edit"></td>
       <td class="table_data archive"><img src="./assets/archive_icon.png" alt="archive" data-note-id="${index}"></td>
+      <td class="table_data unarchive hidden"><img src="./assets/unarchive_icon.png" alt="unarchive" data-note-id="${index}"></td>
       <td class="table_data delete"><img src="./assets/trash-icon.png" alt="trash can" data-note-id="${index}"></td>
     `
   })
@@ -107,14 +108,17 @@ function handleArchiveNote(event) {
 function handleOpenArchivedBtn() {
   isActive = !isActive 
   isActive ? renderTable(archivedNotes) : renderTable(initialNotes)
-  hideIcons()
+  addClassesToIcons('.table_edit_img', 'hidden')
+  addClassesToIcons('.table_edit_img', 'hidden')
+  addClassesToIcons('.delete', 'hidden')
+  addClassesToIcons('.archive', 'hidden')
+  addClassesToIcons('.unarchive', 'active')
 }
-function hideIcons() {
-  const editIcons = document.querySelectorAll('.table_edit_img')
-  const deleteIcons = document.querySelectorAll('.delete')
-  editIcons.forEach((editIcon) => editIcon.classList.add('hidden'))
-  deleteIcons.forEach(((deleteIcon) => deleteIcon.classList.add('hidden')))
+function addClassesToIcons(selector, className) {
+  const icons = document.querySelectorAll(selector)
+  icons.forEach((icon) => icon.classList.add(className))
 }
+
 export function addOpenArchivedBtnListener() {
   const openArchiveBtn = document.getElementById('open_archived_btn')
   openArchiveBtn.addEventListener('click', handleOpenArchivedBtn)
