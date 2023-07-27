@@ -1,15 +1,14 @@
 import {
-  renderNotesOnLoad,
+  renderTable,
   addCreateNoteListener,
   addAddNoteListener,
-  addCloseModalListener
+  addCloseModalListener,
 } from './utils.js'
 
 import { initialNotes } from './data.js'
 
 window.addEventListener('load', () => {
-renderNotesOnLoad(initialNotes)
-console.log(initialNotes)
+renderTable(initialNotes)
 addCreateNoteListener()
 addAddNoteListener()
 addCloseModalListener()

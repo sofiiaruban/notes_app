@@ -42,3 +42,6 @@ export let initialNotes = [
     dates: ['7/26/2023']
   }
 ]
+export let archivedNotes = [
+
+]

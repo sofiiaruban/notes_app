@@ -1,9 +1,13 @@
-import { initialNotes } from './data.js'
+import { initialNotes, archivedNotes } from './data.js'
+
+const notesTable = document.querySelector('.notes_table tbody')
+const modal = document.getElementById('note_modal')
+let isActive = false 
+
 
 export function renderTable(data) {
-  const notesTable = document.querySelector('.notes_table tbody')
   notesTable.innerHTML = ''
-  data.forEach((note) => {
+  data.forEach((note,index) => {
     const newRow = notesTable.insertRow()
     newRow.innerHTML = `
       <td class="table_data">${note.name}</td>
@@ -12,34 +16,30 @@ export function renderTable(data) {
       <td class="table_data">${note.content}</td>
       <td class="table_data edit_table_data">${note.dates.join(
         ', '
-      )} <img src="./assets/edit_icon.png" alt="edit"></td>
-      <td class="table_data"><img src="./assets/archive_icon.png" alt="archive"></td>
-      <td class="table_data"><img src="./assets/trash-icon.png" alt="trash can"></td>
+      )} <img class="table_edit_img" src="./assets/edit_icon.png" alt="edit"></td>
+      <td class="table_data archive"><img src="./assets/archive_icon.png" alt="archive" data-note-id="${index}"></td>
+      <td class="table_data delete"><img src="./assets/trash-icon.png" alt="trash can" data-note-id="${index}"></td>
     `
   })
+  if (data.length === 0) {
+    const messageRow = notesTable.insertRow()
+    messageRow.innerHTML = `<td>You have no notes. Please create one or archived one.</td>`
+  }
+  addDeleteIconListeners()
+  addArchiveIconListeners()
+  addOpenArchivedBtnListener()
 }
 
-export function renderNotesOnLoad(notes) {
-  renderTable(notes)
-  if (notes.length === 0) {
-    const notesTable = document.querySelector('.notes_table')
-    const messageRow = notesTable.insertRow(1)
-    messageRow.innerHTML = `<td colspan="7">You have no notes. Please create one.</td>`
-  }
-}
 export function openModal() {
-  const modal = document.getElementById('note_modal')
   modal.style.display = 'flex'
 }
 export function closeModal() {
-  const modal = document.getElementById('note_modal')
   modal.style.display = 'none'
 }
 export function handleFormSubmit(event) {
   event.preventDefault()
 
-  const form = document.getElementById('note_modal')
-  const formData = new FormData(form)
+  const formData = new FormData(modal)
   const name = formData.get('name')
   const created = formData.get('created')
   const category = formData.get('category')
@@ -77,8 +77,51 @@ export function addAddNoteListener(initialNotes) {
     handleFormSubmit(event, initialNotes)
   )
 }
-
 export function addCloseModalListener() {
   const closeModalButton = document.querySelector('.table_input_close')
   closeModalButton.addEventListener('click', closeModal)
+}
+
+function handleDeleteNote(event) {
+  const noteIndex = event.currentTarget.dataset.noteId
+  if (noteIndex !== undefined) {
+    initialNotes.splice(noteIndex, 1)
+    renderTable(initialNotes)
+  }
+}
+function addDeleteIconListeners() {
+  const deleteIcons = document.querySelectorAll('.delete img')
+  deleteIcons.forEach((deleteIcon) => {
+    deleteIcon.addEventListener('click', handleDeleteNote)
+  })
+}
+
+function handleArchiveNote(event) {
+  const noteIndex = event.currentTarget.dataset.noteId
+  if (noteIndex !== undefined) {
+    const archivedNote = initialNotes.splice(noteIndex, 1)[0]
+    archivedNotes.push(archivedNote)
+    renderTable(initialNotes)
+  }
+}
+function handleOpenArchivedBtn() {
+  isActive = !isActive 
+  isActive ? renderTable(archivedNotes) : renderTable(initialNotes)
+  hideIcons()
+}
+function hideIcons() {
+  const editIcons = document.querySelectorAll('.table_edit_img')
+  const deleteIcons = document.querySelectorAll('.delete')
+  editIcons.forEach((editIcon) => editIcon.classList.add('hidden'))
+  deleteIcons.forEach(((deleteIcon) => deleteIcon.classList.add('hidden')))
+}
+export function addOpenArchivedBtnListener() {
+  const openArchiveBtn = document.getElementById('open_archived_btn')
+  openArchiveBtn.addEventListener('click', handleOpenArchivedBtn)
+}
+export function addArchiveIconListeners() {
+  const archiveIcons = document.querySelectorAll('.archive img')
+  archiveIcons.forEach((archiveIcon) => {
+    archiveIcon.addEventListener('click', handleArchiveNote)
+  })
 }
