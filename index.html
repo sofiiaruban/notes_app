@@ -9,18 +9,22 @@
 <body>
   <main>
     <table class="notes_table">
-      <tr class="table_row">
+      <thead>
+        <tr class="table_row">
         <th class="table_header">Name</th>
         <th class="table_header">Created</th>
         <th class="table_header">Category</th>
         <th class="table_header">Content</th>
         <th class="table_header">Dates</th>
-        <th><img src="./assets/archive_icon.png" alt="archive" ></th>
-        <th><img src="./assets/trash-icon.png" alt="trash can" ></th>
+        <th><img src="./assets/archive_icon.png" alt="archive"></th>
+        <th><img src="./assets/trash-icon.png" alt="trash can"></th>
       </tr>
+    </thead> 
+    <tbody></tbody> 
     </table>
     <button id="create_note_btn">Create Note</button>
     <table class="summary_table">
+       
       <th class="table_header">Note Category</th>
       <th class="table_header">Active</th>
       <th class="table_header">Archived</th>
@@ -31,9 +35,9 @@
     <input type="text" name="created" placeholder="Enter created date">
      
      <div class="table_input_radio">
-      <div class="table_input_radio_row"><input type="radio" name="category"><label>Task</label></div>
-      <div class="table_input_radio_row"><input type="radio" name="category"><label>Random Thought</label></div>
-      <div class="table_input_radio_row"> <input type="radio" name="category"><label>Idea</label></div>
+      <div class="table_input_radio_row"><input type="radio" name="category" value="Task"><label>Task</label></div>
+      <div class="table_input_radio_row"><input type="radio" name="category" value="Random Thought"><label>Random Thought</label></div>
+      <div class="table_input_radio_row"> <input type="radio" name="category" value="Idea"><label>Idea</label></div>
     </div>
      <input type="text" name="content" placeholder="Enter content">
      <input type="text" name="dates" placeholder="Enter dates">

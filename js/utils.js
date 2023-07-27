@@ -1,7 +1,10 @@
+import { initialNotes } from './data.js'
+
 export function renderTable(data) {
-  const notesTable = document.querySelector('.notes_table')
-  data.forEach((note, index) => {
-    const newRow = notesTable.insertRow(index + 1)
+  const notesTable = document.querySelector('.notes_table tbody')
+  notesTable.innerHTML = ''
+  data.forEach((note) => {
+    const newRow = notesTable.insertRow()
     newRow.innerHTML = `
       <td class="table_data">${note.name}</td>
       <td class="table_data">${note.created}</td>
@@ -15,6 +18,7 @@ export function renderTable(data) {
     `
   })
 }
+
 export function renderNotesOnLoad(notes) {
   renderTable(notes)
   if (notes.length === 0) {
@@ -23,7 +27,6 @@ export function renderNotesOnLoad(notes) {
     messageRow.innerHTML = `<td colspan="7">You have no notes. Please create one.</td>`
   }
 }
-
 export function openModal() {
   const modal = document.getElementById('note_modal')
   modal.style.display = 'flex'
@@ -32,7 +35,7 @@ export function closeModal() {
   const modal = document.getElementById('note_modal')
   modal.style.display = 'none'
 }
-export function handleFormSubmit(event, notes) {
+export function handleFormSubmit(event) {
   event.preventDefault()
 
   const form = document.getElementById('note_modal')
@@ -51,7 +54,7 @@ export function handleFormSubmit(event, notes) {
     return
   }
 
-  const newNote = {
+  let newNote = {
     name,
     created,
     category,
@@ -59,23 +62,23 @@ export function handleFormSubmit(event, notes) {
     dates
   }
 
-  notes.push(newNote)
-  form.reset()
-  closeModal()
-  renderTable(notes)
+ initialNotes.push(newNote)
+ form.reset()
+ closeModal()
+ renderTable(initialNotes)
 }
 export function addCreateNoteListener() {
-const createNoteButton = document.getElementById('create_note_btn')
-createNoteButton.addEventListener('click', openModal)
+  const createNoteButton = document.getElementById('create_note_btn')
+  createNoteButton.addEventListener('click', openModal)
 }
-export function addAddNoteListener(notes) {
-const addNoteButton = document.querySelector('.table_input_btn')
-addNoteButton.addEventListener('click', (event) =>
-  handleFormSubmit(event, notes)
-)
+export function addAddNoteListener(initialNotes) {
+  const addNoteButton = document.querySelector('.table_input_btn')
+  addNoteButton.addEventListener('click', (event) =>
+    handleFormSubmit(event, initialNotes)
+  )
 }
 
 export function addCloseModalListener() {
-const closeModalButton = document.querySelector('.table_input_close')
-closeModalButton.addEventListener('click', closeModal)
+  const closeModalButton = document.querySelector('.table_input_close')
+  closeModalButton.addEventListener('click', closeModal)
 }
