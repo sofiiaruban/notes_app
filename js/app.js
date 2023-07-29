@@ -2,7 +2,7 @@ import {
   addCreateNoteListener,
   addAddNoteListener,
   addCloseModalListener,
-  getSummaryObj
+  getSummaryObj,
 } from './utils.js'
 import { initialNotes, archivedNotes } from './data.js'
 import { renderTable, renderSummaryTable } from './render.js'

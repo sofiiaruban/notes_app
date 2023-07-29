@@ -10,19 +10,20 @@ let isEditMode = false
 let editNoteIndex = -1
 
 export function getSummaryObj(notes) {
-let summaryObj = {}
-for (const note of notes) {
-  const category = note.category
-  if (!summaryObj[category]) {
-    summaryObj[category] = { active: 0, archived: 0 }
+  let summaryObj = {}
+
+  for (const note of notes) {
+    const category = note.category
+    if (!summaryObj[category]) {
+      summaryObj[category] = { active: 0, archived: 0 }
+    }
+    if (archivedNotes.includes(note)) {
+      summaryObj[category].archived++
+    } else {
+      summaryObj[category].active++
+    }
   }
-  if (archivedNotes.includes(note)) {
-    summaryObj[category].archived++
-  } else {
-    summaryObj[category].active++
-  }
-}
-  return summaryObj
+    return summaryObj
 
 }
 
@@ -123,9 +124,13 @@ function handleEditNote(event) {
 export function openModal() {
   modal.style.display = 'flex'
   updateBtnText('.table_input_btn', false, 'Update Note', 'Add Note')
+  const overlay = document.querySelector('.overlay')
+  overlay.style.display = 'block'
 }
 export function closeModal() {
   modal.style.display = 'none'
+  const overlay = document.querySelector('.overlay')
+  overlay.style.display = 'none'
 }
 function updateBtnText(selector, active, activeText, inactiveText) {
   const button = document.querySelector(selector)
