@@ -13,4 +13,5 @@ renderSummaryTable(getSummaryObj(initialNotes), getSummaryObj(archivedNotes))
 addCreateNoteListener()
 addAddNoteListener()
 addCloseModalListener()
+
 })

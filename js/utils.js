@@ -8,42 +8,25 @@ const createNoteButton = document.getElementById('create_note_btn')
 let isActive = false 
 let isEditMode = false 
 let editNoteIndex = -1
-
-export function getSummaryObj(notes) {
-  let summaryObj = {}
-
-  for (const note of notes) {
-    const category = note.category
-    if (!summaryObj[category]) {
-      summaryObj[category] = { active: 0, archived: 0 }
-    }
-    if (archivedNotes.includes(note)) {
-      summaryObj[category].archived++
-    } else {
-      summaryObj[category].active++
-    }
-  }
-    return summaryObj
-
-}
+let originalCreatedValue
+//handlers
 
 export function handleFormSubmit(event) {
   event.preventDefault()
+    const formData = new FormData(modal)
+    const name = formData.get('name')
+    const created = formData.get('created')
+    const category = formData.get('category')
+    const content = formData.get('content')
+    const dates = formData
+      .get('dates')
+      .split(',')
+      .map((date) => date.trim())
 
-  const formData = new FormData(modal)
-  const name = formData.get('name')
-  const created = formData.get('created')
-  const category = formData.get('category')
-  const content = formData.get('content')
-  const dates = formData
-    .get('dates')
-    .split(',')
-    .map((date) => date.trim())
-
-  if (!name || !created || !category || !content || !dates) {
-    alert('Please fill in all fields.')
-    return
-  }
+    if (!isEditMode && (!name || !created || !category || !content || !dates)) {
+      alert('Please fill in all fields.')
+      return
+    }
 
   let newNote = {
     name,
@@ -53,16 +36,18 @@ export function handleFormSubmit(event) {
     dates
   }
    if (isEditMode && editNoteIndex !== -1) {
+     newNote.created = created || modal.elements.created.dataset.originalValue
      initialNotes[editNoteIndex] = newNote
      isEditMode = false
      editNoteIndex = -1
+    
    } else {
      initialNotes.push(newNote)
    }
- closeModal()
- renderTable(initialNotes)
+  
+  closeModal()
+  renderTable(initialNotes)
 }
-
 
 function handleDeleteNote(event) {
   const noteIndex = event.currentTarget.dataset.noteId
@@ -97,6 +82,7 @@ function handleOpenArchivedBtn() {
       'Back to Notes',
       'Open Archived'
       )
+      addUnarchiveIconListeners()
   }  else {
     renderTable(initialNotes)
     updateClassNames(['.table_edit_img', '.delete', '.archive'], 'active')
@@ -106,6 +92,20 @@ function handleOpenArchivedBtn() {
       isActive,
       'Back to Notes',
       'Open Archived'
+    )
+  }
+}
+function handleUnarchiveNote(event) {
+  const noteIndex = event.currentTarget.dataset.noteId
+    console.log(noteIndex)
+    console.log('click!')
+  if (noteIndex !== undefined) {
+    const unarchivedNote = archivedNotes.splice(noteIndex, 1)[0]
+    initialNotes.push(unarchivedNote)
+    renderTable(archivedNotes)
+    renderSummaryTable(
+      getSummaryObj(initialNotes),
+      getSummaryObj(archivedNotes)
     )
   }
 }
@@ -121,17 +121,38 @@ function handleEditNote(event) {
   }
 }
 
-export function openModal() {
+//helpers
+
+export function getSummaryObj(notes) {
+  let summaryObj = {}
+
+  for (const note of notes) {
+    const category = note.category
+    if (!summaryObj[category]) {
+      summaryObj[category] = { active: 0, archived: 0 }
+    }
+    if (archivedNotes.includes(note)) {
+      summaryObj[category].archived++
+    } else {
+      summaryObj[category].active++
+    }
+  }
+  return summaryObj
+}
+
+function openModal() {
   modal.style.display = 'flex'
   updateBtnText('.table_input_btn', false, 'Update Note', 'Add Note')
   const overlay = document.querySelector('.overlay')
   overlay.style.display = 'block'
 }
-export function closeModal() {
+
+function closeModal() {
   modal.style.display = 'none'
   const overlay = document.querySelector('.overlay')
   overlay.style.display = 'none'
 }
+
 function updateBtnText(selector, active, activeText, inactiveText) {
   const button = document.querySelector(selector)
   if (button) {
@@ -152,7 +173,16 @@ function fillFormForEdit(note) {
   modal.elements.category.value = note.category
   modal.elements.content.value = note.content
   modal.elements.dates.value = note.dates.join(', ');
+
+   if (originalCreatedValue === undefined) {
+     originalCreatedValue = note.created
+     modal.elements.created.dataset.originalValue = originalCreatedValue
+   }
+  modal.elements.created.disabled = isEditMode
 }
+
+//listeners
+
 export function addCreateNoteListener() {
   createNoteButton.addEventListener('click', openModal)
 }
@@ -173,6 +203,12 @@ export function addArchiveIconListeners() {
   const archiveIcons = document.querySelectorAll('.archive img')
   archiveIcons.forEach((archiveIcon) => {
     archiveIcon.addEventListener('click', handleArchiveNote)
+  })
+}
+export function addUnarchiveIconListeners() {
+  const unarchiveIcons = document.querySelectorAll('.unarchive img')
+  unarchiveIcons.forEach((unarchiveIcon) => {
+    unarchiveIcon.addEventListener('click', handleUnarchiveNote)
   })
 }
 export function addDeleteIconListeners() {

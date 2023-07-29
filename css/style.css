@@ -83,8 +83,9 @@ main {
 .table_input_radio_row input {
   flex-basis: 10%;
 }
+
 .table_input_btn {
-  padding: 5px;
+  padding: 10px;
 }
 .table_input_close {
   width: 20px;
