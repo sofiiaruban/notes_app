@@ -9,6 +9,7 @@ let isActive = false
 let isEditMode = false 
 let editNoteIndex = -1
 let originalCreatedValue
+
 //handlers
 
 export function handleFormSubmit(event) {
@@ -59,6 +60,7 @@ function handleDeleteNote(event) {
 
 function handleArchiveNote(event) {
   const noteIndex = event.currentTarget.dataset.noteId
+
   if (noteIndex !== undefined) {
     const archivedNote = initialNotes.splice(noteIndex, 1)[0]
     archivedNotes.push(archivedNote)
@@ -72,6 +74,7 @@ function handleArchiveNote(event) {
 
 function handleOpenArchivedBtn() {
   isActive = !isActive 
+
   if (isActive) {
     renderTable(archivedNotes)
     updateClassNames(['.table_edit_img', '.delete', '.archive'], 'hidden')
@@ -95,10 +98,10 @@ function handleOpenArchivedBtn() {
     )
   }
 }
+
 function handleUnarchiveNote(event) {
   const noteIndex = event.currentTarget.dataset.noteId
-    console.log(noteIndex)
-    console.log('click!')
+
   if (noteIndex !== undefined) {
     const unarchivedNote = archivedNotes.splice(noteIndex, 1)[0]
     initialNotes.push(unarchivedNote)
@@ -109,8 +112,10 @@ function handleUnarchiveNote(event) {
     )
   }
 }
+
 function handleEditNote(event) {
   const noteIndex = event.currentTarget.dataset.noteId
+
   if (noteIndex !== undefined) {
     isEditMode = true
     editNoteIndex = parseInt(noteIndex, 10)
@@ -186,37 +191,44 @@ function fillFormForEdit(note) {
 export function addCreateNoteListener() {
   createNoteButton.addEventListener('click', openModal)
 }
+
 export function addAddNoteListener(initialNotes) {
   const addNoteButton = document.querySelector('.table_input_btn')
   addNoteButton.addEventListener('click', (event) =>
     handleFormSubmit(event, initialNotes)
   )
 }
+
 export function addCloseModalListener() {
   const closeModalButton = document.querySelector('.table_input_close')
   closeModalButton.addEventListener('click', closeModal)
 }
+
 export function addOpenArchivedBtnListener() {
   openArchiveBtn.addEventListener('click', handleOpenArchivedBtn)
 }
+
 export function addArchiveIconListeners() {
   const archiveIcons = document.querySelectorAll('.archive img')
   archiveIcons.forEach((archiveIcon) => {
     archiveIcon.addEventListener('click', handleArchiveNote)
   })
 }
+
 export function addUnarchiveIconListeners() {
   const unarchiveIcons = document.querySelectorAll('.unarchive img')
   unarchiveIcons.forEach((unarchiveIcon) => {
     unarchiveIcon.addEventListener('click', handleUnarchiveNote)
   })
 }
+
 export function addDeleteIconListeners() {
   const deleteIcons = document.querySelectorAll('.delete img')
   deleteIcons.forEach((deleteIcon) => {
     deleteIcon.addEventListener('click', handleDeleteNote)
   })
 }
+
 export function addEditIconListeners() {
   const editIcons = document.querySelectorAll('.table_edit_img')
   editIcons.forEach((editIcon) => {
