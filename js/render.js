@@ -28,7 +28,7 @@ export function renderTable(data) {
   })
   if (data.length === 0) {
     const messageRow = notesTable.insertRow()
-    messageRow.innerHTML = `<td>You have no notes. Please create one or archived one.</td>`
+    messageRow.innerHTML = `<td>You have no notes. Please create one or archived one</td>`
   }
   addDeleteIconListeners()
   addArchiveIconListeners()
