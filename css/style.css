@@ -1,4 +1,28 @@
-
+main {
+  padding: 30px;
+  margin: 0 auto;
+  font-size: 24px;
+}
+.notes_table{
+ width: 100%;
+ text-align: center;
+}
+.summary_table {
+  text-align: center;
+}
+.notes_table_btns{
+ display: flex;
+ justify-content: end;
+ margin: 30px 0;
+}
+.btn {
+  padding: 5px 10px;
+  font-size: 20px;
+ 
+}
+#open_archived_btn {
+  margin-right: 20px;
+}
 .table_row {
   background-color: lightgray;
 }

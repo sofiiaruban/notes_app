@@ -1,42 +1,31 @@
 import { initialNotes, archivedNotes } from './data.js'
+import { renderTable, renderSummaryTable } from './render.js'
 
-const notesTable = document.querySelector('.notes_table tbody')
 const modal = document.getElementById('note_modal')
+const openArchiveBtn = document.getElementById('open_archived_btn')
+const createNoteButton = document.getElementById('create_note_btn')
+
 let isActive = false 
+let isEditMode = false 
+let editNoteIndex = -1
 
-
-export function renderTable(data) {
-  notesTable.innerHTML = ''
-  data.forEach((note,index) => {
-    const newRow = notesTable.insertRow()
-    newRow.innerHTML = `
-      <td class="table_data">${note.name}</td>
-      <td class="table_data">${note.created}</td>
-      <td class="table_data">${note.category}</td>
-      <td class="table_data">${note.content}</td>
-      <td class="table_data edit_table_data">${note.dates.join(
-        ', '
-      )} <img class="table_edit_img" src="./assets/edit_icon.png" alt="edit"></td>
-      <td class="table_data archive"><img src="./assets/archive_icon.png" alt="archive" data-note-id="${index}"></td>
-      <td class="table_data unarchive hidden"><img src="./assets/unarchive_icon.png" alt="unarchive" data-note-id="${index}"></td>
-      <td class="table_data delete"><img src="./assets/trash-icon.png" alt="trash can" data-note-id="${index}"></td>
-    `
-  })
-  if (data.length === 0) {
-    const messageRow = notesTable.insertRow()
-    messageRow.innerHTML = `<td>You have no notes. Please create one or archived one.</td>`
+export function getSummaryObj(notes) {
+let summaryObj = {}
+for (const note of notes) {
+  const category = note.category
+  if (!summaryObj[category]) {
+    summaryObj[category] = { active: 0, archived: 0 }
   }
-  addDeleteIconListeners()
-  addArchiveIconListeners()
-  addOpenArchivedBtnListener()
+  if (archivedNotes.includes(note)) {
+    summaryObj[category].archived++
+  } else {
+    summaryObj[category].active++
+  }
+}
+  return summaryObj
+
 }
 
-export function openModal() {
-  modal.style.display = 'flex'
-}
-export function closeModal() {
-  modal.style.display = 'none'
-}
 export function handleFormSubmit(event) {
   event.preventDefault()
 
@@ -62,14 +51,104 @@ export function handleFormSubmit(event) {
     content,
     dates
   }
-
- initialNotes.push(newNote)
- form.reset()
+   if (isEditMode && editNoteIndex !== -1) {
+     initialNotes[editNoteIndex] = newNote
+     isEditMode = false
+     editNoteIndex = -1
+   } else {
+     initialNotes.push(newNote)
+   }
  closeModal()
  renderTable(initialNotes)
 }
+
+
+function handleDeleteNote(event) {
+  const noteIndex = event.currentTarget.dataset.noteId
+  if (noteIndex !== undefined) {
+    initialNotes.splice(noteIndex, 1)
+    renderTable(initialNotes)
+  }
+}
+
+function handleArchiveNote(event) {
+  const noteIndex = event.currentTarget.dataset.noteId
+  if (noteIndex !== undefined) {
+    const archivedNote = initialNotes.splice(noteIndex, 1)[0]
+    archivedNotes.push(archivedNote)
+    renderTable(initialNotes)
+    renderSummaryTable(
+      getSummaryObj(initialNotes),
+      getSummaryObj(archivedNotes)
+    )
+  }
+}
+
+function handleOpenArchivedBtn() {
+  isActive = !isActive 
+  if (isActive) {
+    renderTable(archivedNotes)
+    updateClassNames(['.table_edit_img', '.delete', '.archive'], 'hidden')
+    updateClassNames(['.unarchive'], 'active')
+    updateBtnText(
+      '#open_archived_btn',
+       isActive,
+      'Back to Notes',
+      'Open Archived'
+      )
+  }  else {
+    renderTable(initialNotes)
+    updateClassNames(['.table_edit_img', '.delete', '.archive'], 'active')
+    updateClassNames(['.unarchive'], 'hidden')
+    updateBtnText(
+      '#open_archived_btn',
+      isActive,
+      'Back to Notes',
+      'Open Archived'
+    )
+  }
+}
+function handleEditNote(event) {
+  const noteIndex = event.currentTarget.dataset.noteId
+  if (noteIndex !== undefined) {
+    isEditMode = true
+    editNoteIndex = parseInt(noteIndex, 10)
+    const note = initialNotes[editNoteIndex]
+    fillFormForEdit(note)
+    openModal()
+    updateBtnText('.table_input_btn', isEditMode, 'Update Note', 'Add Note')
+  }
+}
+
+export function openModal() {
+  modal.style.display = 'flex'
+  updateBtnText('.table_input_btn', false, 'Update Note', 'Add Note')
+}
+export function closeModal() {
+  modal.style.display = 'none'
+}
+function updateBtnText(selector, active, activeText, inactiveText) {
+  const button = document.querySelector(selector)
+  if (button) {
+    button.textContent = active ? activeText : inactiveText
+  }
+}
+
+function updateClassNames(selectors, className) {
+  selectors.forEach(selector => {
+    const icons = document.querySelectorAll(selector)
+    icons.forEach((icon) => icon.classList.add(className))
+  })
+}
+
+function fillFormForEdit(note) {
+  modal.elements.name.value = note.name
+  modal.elements.created.value = note.created
+  modal.elements.category.value = note.category
+  modal.elements.content.value = note.content
+  modal.elements.dates.value = note.dates.join(', ');
+}
 export function addCreateNoteListener() {
-  const createNoteButton = document.getElementById('create_note_btn')
   createNoteButton.addEventListener('click', openModal)
 }
 export function addAddNoteListener(initialNotes) {
@@ -82,50 +161,24 @@ export function addCloseModalListener() {
   const closeModalButton = document.querySelector('.table_input_close')
   closeModalButton.addEventListener('click', closeModal)
 }
-
-function handleDeleteNote(event) {
-  const noteIndex = event.currentTarget.dataset.noteId
-  if (noteIndex !== undefined) {
-    initialNotes.splice(noteIndex, 1)
-    renderTable(initialNotes)
-  }
-}
-function addDeleteIconListeners() {
-  const deleteIcons = document.querySelectorAll('.delete img')
-  deleteIcons.forEach((deleteIcon) => {
-    deleteIcon.addEventListener('click', handleDeleteNote)
-  })
-}
-
-function handleArchiveNote(event) {
-  const noteIndex = event.currentTarget.dataset.noteId
-  if (noteIndex !== undefined) {
-    const archivedNote = initialNotes.splice(noteIndex, 1)[0]
-    archivedNotes.push(archivedNote)
-    renderTable(initialNotes)
-  }
-}
-function handleOpenArchivedBtn() {
-  isActive = !isActive 
-  isActive ? renderTable(archivedNotes) : renderTable(initialNotes)
-  addClassesToIcons('.table_edit_img', 'hidden')
-  addClassesToIcons('.table_edit_img', 'hidden')
-  addClassesToIcons('.delete', 'hidden')
-  addClassesToIcons('.archive', 'hidden')
-  addClassesToIcons('.unarchive', 'active')
-}
-function addClassesToIcons(selector, className) {
-  const icons = document.querySelectorAll(selector)
-  icons.forEach((icon) => icon.classList.add(className))
-}
-
 export function addOpenArchivedBtnListener() {
-  const openArchiveBtn = document.getElementById('open_archived_btn')
   openArchiveBtn.addEventListener('click', handleOpenArchivedBtn)
 }
 export function addArchiveIconListeners() {
   const archiveIcons = document.querySelectorAll('.archive img')
   archiveIcons.forEach((archiveIcon) => {
     archiveIcon.addEventListener('click', handleArchiveNote)
+  })
+}
+export function addDeleteIconListeners() {
+  const deleteIcons = document.querySelectorAll('.delete img')
+  deleteIcons.forEach((deleteIcon) => {
+    deleteIcon.addEventListener('click', handleDeleteNote)
+  })
+}
+export function addEditIconListeners() {
+  const editIcons = document.querySelectorAll('.table_edit_img')
+  editIcons.forEach((editIcon) => {
+    editIcon.addEventListener('click', handleEditNote)
   })
 }

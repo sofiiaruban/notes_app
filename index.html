@@ -22,13 +22,19 @@
     </thead> 
     <tbody></tbody> 
     </table>
-    <button id="open_archived_btn">Open Archived</button>
-    <button id="create_note_btn">Create Note</button>
+    <div class="notes_table_btns">
+    <button class="btn" id="open_archived_btn">Open Archived</button>
+    <button class="btn" id="create_note_btn">Create Note &plus;</button>
+    </div>
     <table class="summary_table">
-       
-      <th class="table_header">Note Category</th>
-      <th class="table_header">Active</th>
-      <th class="table_header">Archived</th>
+      <thead>
+        <tr class="table_row">
+        <th class="table_header">Note Category</th>
+        <th class="table_header">Active</th>
+        <th class="table_header">Archived</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
   </table>
   </main>
    <form class="modal_box" id="note_modal">
