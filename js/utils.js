@@ -45,7 +45,7 @@ export function handleFormSubmit(event) {
    } else {
      initialNotes.push(newNote)
    }
-  
+  resetForm()
   closeModal()
   renderTable(initialNotes)
 }
@@ -185,6 +185,15 @@ function fillFormForEdit(note) {
    }
   modal.elements.created.disabled = isEditMode
 }
+function resetForm() {
+  modal.elements.name.value = ''
+  modal.elements.created.value = ''
+  modal.elements.category.value = ''
+  modal.elements.content.value = ''
+  modal.elements.dates.value = ''
+  originalCreatedValue = undefined
+}
+
 
 //listeners
 
